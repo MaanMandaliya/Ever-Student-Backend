@@ -24,13 +24,8 @@ app.use(
 app.use('/users', UserRoutes);
 
 app.use('*', (req, res, next) => {
-    const err = new GlobalError(404, 'fail', 'undefined route');
-    res.status(err.statusCode).json({
-        status: err.status,
-        error: err,
-        message: err.message,
-        stack: err.stack,
-    });
+    const err = new GlobalError(404, 'failed', 'undefined route');
+    err.sendError(res);
 });
 
 module.exports = app;
