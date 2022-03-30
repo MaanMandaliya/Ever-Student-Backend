@@ -5,15 +5,21 @@ exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
+
+        // Check if user exists
         if (!user) {
             const err = new GlobalError(400, 'failed', 'Invalid Username');
             return err.sendError(res);
         }
+
+        // Check if password is correct
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
             const err = new GlobalError(400, 'failed', 'Invalid Password');
             return err.sendError(res);
         }
+
+        // Return JWT Token
         res.status(200).json({
             status: 'success',
             user: {
@@ -35,15 +41,21 @@ exports.signup = async (req, res, next) => {
     try {
         const { email, password, name } = req.body;
         const user = await User.findOne({ email });
+
+        // Check if user exists
         if (user) {
             const err = new GlobalError(400, 'failed', 'User already exists');
             return err.sendError(res);
         }
+
+        // Create new user
         const newUser = await User.create({
             email,
             password,
             name,
         });
+
+        // Return JWT Token
         res.status(201).json({
             status: 'success',
             user: {
@@ -53,6 +65,19 @@ exports.signup = async (req, res, next) => {
                 id: newUser._id,
                 token: Buffer.from(`${newUser._id}`).toString('base64'),
             },
+        });
+    } catch (error) {
+        console.log(error);
+        const err = new GlobalError(500, 'failed', 'Internal Server Error');
+        return err.sendError(res);
+    }
+};
+
+exports.test = async (req, res, next) => {
+    try {
+        res.status(200).json({
+            status: 'success',
+            message: 'This is a test',
         });
     } catch (error) {
         console.log(error);

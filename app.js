@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
+const Authorization = require('./middlewares/Authorization');
 const UserRoutes = require('./routes/user');
 const GlobalError = require('./utils/GlobalError');
 
@@ -19,6 +20,9 @@ app.use(
         limit: '20kb',
     })
 );
+
+// Middleware: Authorization
+app.use(Authorization);
 
 // Routes
 app.use('/users', UserRoutes);
