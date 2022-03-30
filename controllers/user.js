@@ -27,6 +27,8 @@ exports.login = async (req, res, next) => {
                 email: user.email,
                 role: user.role,
                 id: user._id,
+                age: user.age,
+                gender: user.gender,
                 token: Buffer.from(`${user._id}`).toString('base64'),
             },
         });
