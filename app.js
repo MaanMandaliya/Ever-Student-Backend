@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const Authorization = require('./middlewares/Authorization');
 const UserRoutes = require('./routes/user');
+const CourseRoutes = require('./routes/course');
 const GlobalError = require('./utils/GlobalError');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(Authorization);
 
 // Routes
 app.use('/users', UserRoutes);
+app.use('/courses', CourseRoutes);
 
 app.use('*', (req, res, next) => {
     const err = new GlobalError(404, 'failed', 'undefined route');
