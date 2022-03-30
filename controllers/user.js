@@ -39,7 +39,7 @@ exports.login = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
     try {
-        const { email, password, name } = req.body;
+        const { email, password, name, role, gender, age } = req.body;
         const user = await User.findOne({ email });
 
         // Check if user exists
@@ -53,6 +53,9 @@ exports.signup = async (req, res, next) => {
             email,
             password,
             name,
+            role,
+            gender,
+            age,
         });
 
         // Return JWT Token
