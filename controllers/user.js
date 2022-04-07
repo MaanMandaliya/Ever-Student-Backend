@@ -90,3 +90,55 @@ exports.test = async (req, res, next) => {
         return err.sendError(res);
     }
 };
+
+exports.enroll = async (req, res, next) => {
+    try {
+        const { courseId, userId } = req.body;
+        const user = await User.findById(userId);
+
+        // update query
+        const update = {
+            $push: {
+                courses: courseId,
+            },
+        };
+
+        // update options
+        const options = {
+            new: true,
+        };
+
+        // update user
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            update,
+            options
+        );
+
+        // return user
+        res.status(200).json({
+            status: 'success',
+        });
+    } catch (error) {
+        console.log(error);
+        const err = new GlobalError(500, 'failed', 'Internal Server Error');
+        return err.sendError(res);
+    }
+};
+
+exports.courses = async (req, res, next) => {
+    try {
+        const { userId } = req.body;
+        const user = await User.findById(userId);
+
+        // return user
+        res.status(200).json({
+            status: 'success',
+            courses: user.courses,
+        });
+    } catch (error) {
+        console.log(error);
+        const err = new GlobalError(500, 'failed', 'Internal Server Error');
+        return err.sendError(res);
+    }
+};

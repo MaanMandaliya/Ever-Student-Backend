@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
     },
+    courses: {
+        tpye: Array,
+    },
 });
 
 // match password
